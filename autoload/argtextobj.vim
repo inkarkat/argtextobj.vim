@@ -248,10 +248,32 @@ function! argtextobj#MotionArgument(inner, visual)
   call s:Repeat(cnt, a:inner, a:visual, operator)
 endfunction
 
+
+" Inlined / vendorized from {{{
+" https://github.com/vim-scripts/ingo-library/blob/master/autoload/ingo/motion/omap.vim
+function! s:omap_repeat( repeatMapping, operator, count )
+    if a:operator ==# 'y' && &cpoptions !~# 'y'
+      " A yank usually doesn't repeat.
+      return
+    endif
+
+    silent! call repeat#set(a:operator . a:repeatMapping .
+    \   (a:operator ==# 'c' ? "\<Plug>(IngoLibraryOmapRepeatReinsert)" : ''),
+    \   a:count
+    \)
+endfunction
+
+" This is for the special repeat of a "c" command, to insert the last entered
+" text and leave insert mode. We define a :noremap so that any user mappings do
+" not affect this.
+inoremap <Plug>(IngoLibraryOmapRepeatReinsert) <C-r>.<Esc>
+" }}}
+
+
 function! s:Repeat(cnt, inner, visual, operator)
   let l:mapping = (a:inner ? "\<Plug>(argtextobjI)" : "\<Plug>(argtextobjA)")
   if !a:visual
-    silent! call ingo#motion#omap#repeat(l:mapping, a:operator, a:cnt)
+    call s:omap_repeat(l:mapping, a:operator, a:cnt)
   endif
 endfunction
 
