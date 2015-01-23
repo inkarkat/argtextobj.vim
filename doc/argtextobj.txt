@@ -72,9 +72,7 @@ your |vimrc|): >
 4. INSTALLATION ~
                                                      *argtextobj-installation*
 To enable repeat via |.| of the operator-pending text objects, you need to
-install the following optional dependencies:
-- |ingo-library.vim| plugin (vimscript #4433), version 1.016 or higher
-  (optional).
+install the following optional dependency:
 - repeat.vim (vimscript #2136) plugin (optional)
 
 " vim:tw=78:et:ft=help:norl:
